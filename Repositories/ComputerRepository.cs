@@ -37,7 +37,7 @@ class ComputerRepository //isolar funcionalidade de acesso a dados
         return computers;
     }
 
-    public void Save(Computer computer) //tipo que voce criou
+    public Computer Save(Computer computer) //tipo que voce criou
     {
         var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open(); //ABRIR O ARQUIVO/conexão database.db
@@ -51,5 +51,7 @@ class ComputerRepository //isolar funcionalidade de acesso a dados
 
         command.ExecuteNonQuery(); //create não devolve nada, se fosse select teria retorno
         connection.Close(); // fecha a conexão
+
+        return computer;
     }
 }
