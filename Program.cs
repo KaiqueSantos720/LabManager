@@ -2,7 +2,11 @@
 using LabManager.Database;
 using LabManager.Repositories;
 
-var databaseSetup = new DatabaseSetup(); //instancia o database e já executa os método
+var databaseConfig = new DatabaseConfig(); // cria objeto de string de conexão
+
+var databaseSetup = new DatabaseSetup(databaseConfig); //instancia o database e já executa os método
+
+var computerRepository = new ComputerRepository(databaseConfig);
 
 // See https://aka.ms/new-console-template for more information
 //Console.WriteLine(args);
@@ -18,7 +22,6 @@ var ModelAction = args[1];
 
 if(modelName == "Computer")
 {
-    var computerRepository = new ComputerRepository();
     if(ModelAction == "List")
     {
         Console.WriteLine("Computer List");
