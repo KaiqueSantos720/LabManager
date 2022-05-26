@@ -60,8 +60,8 @@ class ComputerRepository //isolar funcionalidade de acesso a dados
         var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open();
 
-        GetById(computer.Id);
-        
+        GetById(computer.Id); // verifica a existencia do id no banco
+
         var command = connection.CreateCommand(); //comando criado no banco aberto
         command.CommandText = "UPDATE Computers SET ram = ($ram), processor = ($processor) WHERE id = ($id)";
         command.Parameters.AddWithValue("$id", computer.Id);
@@ -87,4 +87,5 @@ class ComputerRepository //isolar funcionalidade de acesso a dados
         connection.Close();
         return computer;
     }
+
 }
