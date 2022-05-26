@@ -36,8 +36,15 @@ if(modelName == "Computer")
     {
         Console.WriteLine("Computer New");
         var computer = new Computer(Convert.ToInt32(args[2]), args[3], args[4]);
-        computerRepository.Save(computer);
-        Console.WriteLine("Computer adicionado");
+        try
+        {
+            computerRepository.Save(computer);
+            Console.WriteLine("Computer adicionado");
+        }
+        catch (System.Exception)
+        {
+            Console.WriteLine("Id já existente");
+        }
     }
 
     if(modelAction == "Update")
