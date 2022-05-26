@@ -18,12 +18,12 @@ var computerRepository = new ComputerRepository(databaseConfig);
 
 
 var modelName = args[0];
-var ModelAction = args[1];
+var modelAction = args[1];
 //var - infere o tipo da variavel - diminui o código e fica mais legível
 
 if(modelName == "Computer")
 {
-    if(ModelAction == "List")
+    if(modelAction == "List")
     {
         Console.WriteLine("Computer List");
         foreach (var computer in computerRepository.GetAll())
@@ -32,13 +32,14 @@ if(modelName == "Computer")
         }
     }
 
-    if(ModelAction == "New")
+    if(modelAction == "New")
     {
         int id = Convert.ToInt32(args[2]);
         string ram = args[3];
         string processor = args[4];
         var computer = new Computer(id, ram, processor);
         computerRepository.Save(computer);
+        Console.WriteLine("Computer adicionado");
     }
 
 
