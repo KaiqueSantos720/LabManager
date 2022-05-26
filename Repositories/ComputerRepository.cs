@@ -88,4 +88,18 @@ class ComputerRepository //isolar funcionalidade de acesso a dados
         return computer;
     }
 
+    public void Delete(int id)
+    {
+        var connection = new SqliteConnection(_databaseConfig.ConnectionString);
+        connection.Open();
+
+        GetById(id); // verifica a existencia do id no banco
+
+        var command = connection.CreateCommand(); //comando criado no banco aberto
+        command.CommandText = "DELETE FROM Computers WHERE id = ($id)";
+        command.Parameters.AddWithValue("$id", id);
+        command.ExecuteNonQuery();
+        connection.Close();
+    }
+
 }
