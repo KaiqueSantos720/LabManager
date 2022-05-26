@@ -69,6 +69,18 @@ if(modelName == "Computer")
         }
     }
 
-    
+    if(modelAction == "Delete")
+    {
+        Console.WriteLine("Computer Delete");
+        try
+        {
+            computerRepository.Delete(Convert.ToInt32(args[2]));
+            Console.WriteLine($"O Computer de id {args[2]} foi removido");
+        }
+        catch (System.Exception)
+        {
+            Console.WriteLine("Id Inválida");
+        }
+    }
 
 }
