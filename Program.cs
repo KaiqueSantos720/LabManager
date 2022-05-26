@@ -42,5 +42,13 @@ if(modelName == "Computer")
         Console.WriteLine("Computer adicionado");
     }
 
+    if(modelAction == "Update")
+    {
+        int id = Convert.ToInt32(args[2]);
+        string ram = args[3];
+        string processor = args[4];
+        var computer = new Computer(id, ram, processor);
+        computerRepository.Update(computer);
+    }
 
 }
