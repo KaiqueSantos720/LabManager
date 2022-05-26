@@ -34,6 +34,7 @@ if(modelName == "Computer")
 
     if(modelAction == "New")
     {
+        Console.WriteLine("Computer New");
         int id = Convert.ToInt32(args[2]);
         string ram = args[3];
         string processor = args[4];
@@ -44,11 +45,34 @@ if(modelName == "Computer")
 
     if(modelAction == "Update")
     {
+        Console.WriteLine("Computer Update");
         int id = Convert.ToInt32(args[2]);
         string ram = args[3];
         string processor = args[4];
         var computer = new Computer(id, ram, processor);
-        computerRepository.Update(computer);
+        try
+        {
+            computerRepository.Update(computer);
+            Console.WriteLine("Computer atualizado");
+        }
+        catch (System.Exception)
+        {
+            Console.WriteLine("Id Inválida");
+        }
+    }
+
+    if(modelAction == "Show")
+    {
+        Console.WriteLine("Computer Show");
+        try
+        {
+            var computerShow = computerRepository.GetById(Convert.ToInt32(args[2]));
+            Console.WriteLine($"{computerShow.Id}, {computerShow.Ram}, {computerShow.Processor}");
+        }
+        catch (System.Exception)
+        {
+            Console.WriteLine("Id Inválida");
+        }
     }
 
 }
