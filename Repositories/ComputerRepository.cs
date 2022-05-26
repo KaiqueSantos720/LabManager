@@ -42,6 +42,13 @@ class ComputerRepository //isolar funcionalidade de acesso a dados
         var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open(); //ABRIR O ARQUIVO/conexão database.db
 
+        foreach(var pc in GetAll())
+        {
+            if(pc.Id == computer.Id)
+            {
+                throw new Exception();
+            }
+        }
 
         var command = connection.CreateCommand(); //comando criado no banco aberto
         command.CommandText = "INSERT INTO Computers VALUES ($id, $ram, $processor)"; //@ - STRING COM QUEBRA DE LINHA
