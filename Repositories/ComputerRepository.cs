@@ -32,7 +32,7 @@ class ComputerRepository //isolar funcionalidade de acesso a dados
             computers.Add(computer);
         }
 
-        connection.Close(); // fecha a conexão
+        connection.Close();
 
         return computers;
     }
