@@ -37,15 +37,7 @@ class ComputerRepository //isolar funcionalidade de acesso a dados
     public Computer Save(Computer computer) //tipo que voce criou
     {
         var connection = new SqliteConnection(_databaseConfig.ConnectionString);
-        connection.Open(); //ABRIR O ARQUIVO/conexão database.db
-
-        foreach(var pc in GetAll())
-        {
-            if(pc.Id == computer.Id)
-            {
-                throw new Exception();
-            }
-        }
+        connection.Open(); //ABRIR O ARQUIVO/conexão database.d
 
         var command = connection.CreateCommand(); //comando criado no banco aberto
         command.CommandText = "INSERT INTO Computers VALUES ($id, $ram, $processor)"; //@ - STRING COM QUEBRA DE LINHA
@@ -63,8 +55,6 @@ class ComputerRepository //isolar funcionalidade de acesso a dados
     {
         var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open();
-
-        GetById(computer.Id); // verifica a existencia do id no banco
 
         var command = connection.CreateCommand(); //comando criado no banco aberto
         command.CommandText = "UPDATE Computers SET ram = ($ram), processor = ($processor) WHERE id = ($id)";
@@ -96,8 +86,6 @@ class ComputerRepository //isolar funcionalidade de acesso a dados
     {
         var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open();
-
-        GetById(id); // verifica a existencia do id no banco
 
         var command = connection.CreateCommand(); //comando criado no banco aberto
         command.CommandText = "DELETE FROM Computers WHERE id = ($id)";

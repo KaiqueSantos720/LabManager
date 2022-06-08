@@ -25,11 +25,7 @@ class LabRepository //isolar funcionalidade de acesso a dados
 
         while(reader.Read())
         {
-            var id = reader.GetInt32(0);
-            var number = reader.GetInt32(1);
-            var name = reader.GetString(2);
-            var block = reader.GetString(3);
-            var lab = new Lab(id, number, name, block);
+            var lab = ReaderToComputer(reader);
             labs.Add(lab);
         }
 
@@ -42,14 +38,6 @@ class LabRepository //isolar funcionalidade de acesso a dados
     {
         var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open(); //ABRIR O ARQUIVO/conexão database.db
-
-        foreach(var labFor in GetAll())
-        {
-            if(labFor.Id == lab.Id)
-            {
-                throw new Exception();
-            }
-        }
 
         var command = connection.CreateCommand(); //comando criado no banco aberto
         command.CommandText = "INSERT INTO Lab VALUES ($id_lab, $number, $name, $block)"; //@ - STRING COM QUEBRA DE LINHA
@@ -68,8 +56,6 @@ class LabRepository //isolar funcionalidade de acesso a dados
     {
         var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open();
-
-        GetById(lab.Id); // verifica a existencia do id no banco
 
         var command = connection.CreateCommand(); //comando criado no banco aberto
         command.CommandText = "UPDATE Lab SET number = ($number), name = ($name), block = ($block) WHERE id_lab = ($id_lab)";
@@ -93,7 +79,7 @@ class LabRepository //isolar funcionalidade de acesso a dados
         command.Parameters.AddWithValue("$id_lab", id);
         var reader = command.ExecuteReader();
         reader.Read();
-        Lab lab = new Lab(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2), reader.GetString(3));
+        var lab = ReaderToComputer(reader);
         connection.Close();
         return lab;
     }
@@ -102,8 +88,6 @@ class LabRepository //isolar funcionalidade de acesso a dados
     {
         var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open();
-
-        GetById(id); // verifica a existencia do id no banco
 
         var command = connection.CreateCommand(); //comando criado no banco aberto
         command.CommandText = "DELETE FROM Lab WHERE id_lab = ($id_lab)";
@@ -114,7 +98,7 @@ class LabRepository //isolar funcionalidade de acesso a dados
 
     private Lab ReaderToComputer(SqliteDataReader reader)
     {
-        var lab = new Lab(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(3), reader.GetString(4));
+        var lab = new Lab(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2), reader.GetString(3));
         return lab;
     }
 
@@ -124,7 +108,7 @@ class LabRepository //isolar funcionalidade de acesso a dados
         connection.Open();
 
         var command = connection.CreateCommand();
-        command.CommandText = "SELECT count(id) FROM Lab WHERE id_lab = ($id_lab)";
+        command.CommandText = "SELECT count(id_lab) FROM Lab WHERE id_lab = ($id_lab)";
         command.Parameters.AddWithValue("$id_lab", id);
 
         var result = Convert.ToBoolean(command.ExecuteScalar());
