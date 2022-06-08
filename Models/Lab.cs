@@ -2,16 +2,16 @@ namespace LabManager.Models;
 
 class Lab
 {
-    public int IdLab{get; set;}
-    public string Name {get; set;}
+    public int Id{get; set;}
     public int Number {get; set;}
+    public string Name {get; set;}
     public string Block{get; set;}
 
-    public Lab(int idLab, string name, int number, string block)
+    public Lab(int id, int number, string name, string block)
     {
-        IdLab = idLab;
-        Name = name;
+        Id = id;
         Number = number;
+        Name = name;
         Block = block;
     }
 }
