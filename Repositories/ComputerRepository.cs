@@ -53,7 +53,6 @@ class ComputerRepository //isolar funcionalidade de acesso a dados
         using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open();
 
-
         var computer = connection.QuerySingle<Computer>("SELECT * FROM Computers WHERE id = @Id", new {Id = id});
 
         return computer;
@@ -79,15 +78,10 @@ class ComputerRepository //isolar funcionalidade de acesso a dados
 
     public bool ExistsById(int id)
     {
-        var connection = new SqliteConnection(_databaseConfig.ConnectionString);
+        using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open();
 
-        var command = connection.CreateCommand();
-        command.CommandText = "SELECT count(id) FROM Computers WHERE id = ($id)";
-        command.Parameters.AddWithValue("$id", id);
-
-        var result = Convert.ToBoolean(command.ExecuteScalar());
-
+        var result = Convert.ToBoolean(connection.ExecuteScalar("SELECT count(id) FROM Computers WHERE id = @Id", new {Id = id}));
 
         return result;
     }
