@@ -1,6 +1,7 @@
 using LabManager.Database;
 using LabManager.Models;
 using Microsoft.Data.Sqlite;
+using Dapper;
 namespace LabManager.Repositories;
 
 class ComputerRepository //isolar funcionalidade de acesso a dados
@@ -10,26 +11,12 @@ class ComputerRepository //isolar funcionalidade de acesso a dados
     {
         _databaseConfig = databaseConfig;
     }
-    public List<Computer> GetAll()
+    public IEnumerable<Computer> GetAll()
     {
-        var computers = new List<Computer>();
-
-        var connection = new SqliteConnection(_databaseConfig.ConnectionString);
+        using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open(); //ABRIR O ARQUIVO/conexão database.db
 
-
-        var command = connection.CreateCommand(); //comando criado no banco aberto
-        command.CommandText = "SELECT * FROM Computers";
-
-        var reader = command.ExecuteReader(); //representa o resultado da tabela
-
-        while(reader.Read())
-        {
-            var computer = ReaderToComputer(reader);
-            computers.Add(computer);
-        }
-
-        connection.Close();
+        var computers = connection.Query<Computer>("SELECT * FROM Computers");
 
         return computers;
     }
@@ -39,13 +26,8 @@ class ComputerRepository //isolar funcionalidade de acesso a dados
         var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open(); //ABRIR O ARQUIVO/conexão database.d
 
-        var command = connection.CreateCommand(); //comando criado no banco aberto
-        command.CommandText = "INSERT INTO Computers VALUES ($id, $ram, $processor)"; //@ - STRING COM QUEBRA DE LINHA
-        command.Parameters.AddWithValue("$id", computer.Id);
-        command.Parameters.AddWithValue("$ram", computer.Ram);
-        command.Parameters.AddWithValue("$processor", computer.Processor);
+        connection.Execute("INSERT INTO Computers VALUES (@Id, @Ram, @Processor)", computer);
 
-        command.ExecuteNonQuery(); //create não devolve nada, se fosse select teria retorno
         connection.Close(); // fecha a conexão
 
         return computer;
