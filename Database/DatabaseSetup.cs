@@ -13,7 +13,7 @@ class DatabaseSetup
     }
     private void CreateComputerTable()
     {
-        var connection = new SqliteConnection(_databaseConfig.ConnectionString);
+        using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open(); //ABRIR O ARQUIVO/conexão database.db
         var command = connection.CreateCommand(); //comando criado no banco aberto
         command.CommandText = @"
@@ -26,17 +26,16 @@ class DatabaseSetup
         //if not exists - se a tabela nao for criada
 
         command.ExecuteNonQuery(); //create table não devolve nada, se fosse select teria retorno
-        connection.Close(); //fecha a conexão do banco
     }
 
     private void CreateLabTable()
     {
-        var connection = new SqliteConnection(_databaseConfig.ConnectionString);
+        using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open(); //ABRIR O ARQUIVO/conexão database.db
         var command = connection.CreateCommand(); //comando criado no banco aberto
         command.CommandText = @"
-            CREATE TABLE IF NOT EXISTS Lab(
-                id_lab int not null primary key,
+            CREATE TABLE IF NOT EXISTS Labs(
+                id int not null primary key,
                 number int not null,
                 name varchar(100) not null,
                 block varchar(10) not null
@@ -45,6 +44,5 @@ class DatabaseSetup
         //if not exists - se a tabela nao for criada
 
         command.ExecuteNonQuery(); //create table não devolve nada, se fosse select teria retorno
-        connection.Close(); //fecha a conexão do banco
     }
 }
