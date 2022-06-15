@@ -2,6 +2,7 @@
 using LabManager.Database;
 using LabManager.Repositories;
 using LabManager.Models;
+using Dapper;
 
 var databaseConfig = new DatabaseConfig(); // cria objeto de string de conexão
 
