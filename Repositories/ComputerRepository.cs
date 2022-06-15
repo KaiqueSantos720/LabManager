@@ -11,6 +11,7 @@ class ComputerRepository //isolar funcionalidade de acesso a dados
     {
         _databaseConfig = databaseConfig;
     }
+
     public IEnumerable<Computer> GetAll()
     {
         using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
@@ -23,12 +24,10 @@ class ComputerRepository //isolar funcionalidade de acesso a dados
 
     public Computer Save(Computer computer) //tipo que voce criou
     {
-        var connection = new SqliteConnection(_databaseConfig.ConnectionString);
-        connection.Open(); //ABRIR O ARQUIVO/conexão database.d
+        using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
+        connection.Open(); //ABRIR O ARQUIVO/conexão database.db
 
         connection.Execute("INSERT INTO Computers VALUES (@Id, @Ram, @Processor)", computer);
-
-        connection.Close(); // fecha a conexão
 
         return computer;
     }  
@@ -51,16 +50,12 @@ class ComputerRepository //isolar funcionalidade de acesso a dados
 
     public Computer GetById(int id)
     {
-        var connection = new SqliteConnection(_databaseConfig.ConnectionString);
+        using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open();
 
-        var command = connection.CreateCommand();
-        command.CommandText = "SELECT * FROM Computers WHERE id = ($id)";
-        command.Parameters.AddWithValue("$id", id);
-        var reader = command.ExecuteReader();
-        reader.Read();
-        var computer = ReaderToComputer(reader);
-        connection.Close();
+
+        var computer = connection.QuerySingle<Computer>("SELECT * FROM Computers WHERE id = @Id", new {Id = id});
+
         return computer;
     }
 
