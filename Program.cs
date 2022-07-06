@@ -10,7 +10,6 @@ var databaseSetup = new DatabaseSetup(databaseConfig); //instancia o database e 
 var computerRepository = new ComputerRepository(databaseConfig);
 var labRepository = new LabRepository(databaseConfig);
 
-// See https://aka.ms/new-console-template for more information
 //Console.WriteLine(args);
 //foreach (var arg in args)
 //{
