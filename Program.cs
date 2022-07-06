@@ -8,13 +8,8 @@ var databaseConfig = new DatabaseConfig(); // cria objeto de string de conexão
 var databaseSetup = new DatabaseSetup(databaseConfig); //instancia o database e já executa os método
 
 var computerRepository = new ComputerRepository(databaseConfig);
-var labRepository = new LabRepository(databaseConfig);
 
-//Console.WriteLine(args);
-//foreach (var arg in args)
-//{
-//    Console.WriteLine(arg);
-//}
+var labRepository = new LabRepository(databaseConfig);
 
 
 var modelName = args[0];
