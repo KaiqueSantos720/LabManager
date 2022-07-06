@@ -27,9 +27,16 @@ if(modelName == "Computer")
     if(modelAction == "List")
     {
         Console.WriteLine("Computer List");
-        foreach (var computer in computerRepository.GetAll())
+        if(computerRepository.GetAll().Count == 0)
         {
-            Console.WriteLine($"{computer.Id}, {computer.Ram}, {computer.Processor}");            
+            Console.WriteLine("Nenhum computer cadastrado");
+        }
+        else
+        {
+            foreach (var computer in computerRepository.GetAll())
+            {
+                Console.WriteLine($"{computer.Id}, {computer.Ram}, {computer.Processor}");            
+            }
         }
     }
 
@@ -100,9 +107,17 @@ if(modelName == "Lab")
     if(modelAction == "List")
     {
         Console.WriteLine("Lab List");
-        foreach (var lab in labRepository.GetAll())
+        
+        if(labRepository.GetAll().Count == 0)
         {
-            Console.WriteLine($"{lab.Id}, {lab.Number}, {lab.Name}, {lab.Block}");            
+            Console.WriteLine("Nenhum lab cadastrado");
+        }
+        else
+        {
+            foreach (var lab in labRepository.GetAll())
+            {
+                Console.WriteLine($"{lab.Id}, {lab.Number}, {lab.Name}, {lab.Block}");            
+            }
         }
     }
 

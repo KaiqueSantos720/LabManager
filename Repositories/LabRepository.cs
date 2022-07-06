@@ -11,14 +11,14 @@ class LabRepository //isolar funcionalidade de acesso a dados
     {
         _databaseConfig = databaseConfig;
     }
-    public IEnumerable<Lab> GetAll()
+    public List<Lab> GetAll()
     {
         using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open(); //ABRIR O ARQUIVO/conexão database.db
 
         var labs = connection.Query<Lab>("SELECT * FROM Labs");
 
-        return labs;
+        return labs.ToList();
     }
 
     public Lab Save(Lab lab) //tipo que voce criou

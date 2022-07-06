@@ -12,14 +12,14 @@ class ComputerRepository //isolar funcionalidade de acesso a dados
         _databaseConfig = databaseConfig;
     }
 
-    public IEnumerable<Computer> GetAll()
+    public List<Computer> GetAll()
     {
         using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open(); //ABRIR O ARQUIVO/conexão database.db
 
         var computers = connection.Query<Computer>("SELECT * FROM Computers");
 
-        return computers;
+        return computers.ToList();
     }
 
     public Computer Save(Computer computer) //tipo que voce criou
