@@ -1,20 +1,16 @@
-﻿using Microsoft.Data.Sqlite; //importar o sqlite
-using LabManager.Database;
-using LabManager.Repositories;
+﻿using LabManager.Repositories;
 using LabManager.Models;
+using Microsoft.EntityFrameworkCore;
 
-var databaseConfig = new DatabaseConfig(); // cria objeto de string de conexão
+SystemContext context = new SystemContext();
+context.Database.EnsureCreated();
 
-var databaseSetup = new DatabaseSetup(databaseConfig); //instancia o database e já executa os método
-
-var computerRepository = new ComputerRepository(databaseConfig);
-
-var labRepository = new LabRepository(databaseConfig);
+var computerRepository = new ComputerRepository(context);
+var labRepository = new LabRepository(context);
 
 
 var modelName = args[0];
 var modelAction = args[1];
-//var - infere o tipo da variavel - diminui o código e fica mais legível
 
 if(modelName == "Computer")
 {
@@ -94,14 +90,11 @@ if(modelName == "Computer")
 
 }
 
-
-
 if(modelName == "Lab")
 {
     if(modelAction == "List")
     {
         Console.WriteLine("Lab List");
-        
         if(labRepository.GetAll().Count == 0)
         {
             Console.WriteLine("Nenhum lab cadastrado");
@@ -151,7 +144,7 @@ if(modelName == "Lab")
         if(labRepository.ExistsById(Convert.ToInt32(args[2])))
         {
             var labShow = labRepository.GetById(Convert.ToInt32(args[2]));
-            Console.WriteLine($"{labShow.Id}, {labShow.Number}, {labShow.Name}, {labShow.Block}"); 
+            Console.WriteLine($"{labShow.Id}, {labShow.Number}, {labShow.Name}, {labShow.Block}");
         }
         else
         {
@@ -165,7 +158,7 @@ if(modelName == "Lab")
         if(labRepository.ExistsById(Convert.ToInt32(args[2])))
         {
             labRepository.Delete(Convert.ToInt32(args[2]));
-            Console.WriteLine($"O lab de id {args[2]} foi removido");
+            Console.WriteLine($"O Lab de id {args[2]} foi removido");
         }
         else
         {
